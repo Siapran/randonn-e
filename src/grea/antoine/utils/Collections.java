@@ -35,11 +35,9 @@ public class Collections {
     
     public static <T> Set<T> union(Collection<Set<T>> sets) {
         Set<T> tmp = new HashSet<>();
-        for (Set<? extends T> set : sets) {
-            if (set != null) {
-                tmp.addAll(set);
-            }
-        }
+        sets.stream().filter((set) -> (set != null)).forEach((set) -> {
+            tmp.addAll(set);
+        });
         return tmp;
     }
 

@@ -3,22 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rpg.rules;
+package rpg.utils;
+
+import rpg.world.Entity;
+import rpg.world.Trackable;
 
 /**
  *
  * @author siapran
+ * @param <T>
  */
-public enum Caracteristic {
-    HEALTH,
-    ENERGY,
-    KARMA,
-    STRENGTH,
-    AGILITY,
-    INTELLIGENCE,
-    WILLPOWER,
-    DEXTERITY,
-    AWARENESS
-    
-    
+public interface Holder {
+    public Class<? extends Entity> getHoldCapability();
+    public Tracker getTracker();
 }
