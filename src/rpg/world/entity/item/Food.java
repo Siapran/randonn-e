@@ -6,30 +6,36 @@
 package rpg.world.entity.item;
 
 import rpg.utils.Holder;
+import rpg.utils.Named;
 import rpg.world.entity.Item;
 
-
+@Named(name = "nourriture")
 public abstract class Food extends Item {
-    
-    private final double calories;
 
-    public Food(double calories, Holder holder, double condition, double weight) {
+    private final int calories;
+    private final int moisture;
+
+    public Food(int calories, Holder holder, int condition, int weight) {
         super(holder, condition, weight);
         this.calories = calories;
+        this.moisture = 0;
     }
 
+    public Food(int calories, int moisture, Holder holder, int condition, int weight) {
+        super(holder, condition, weight);
+        this.calories = calories;
+        this.moisture = moisture;
+    }
     
 
-    public double getCalories() {
+    public int getCalories() {
         return calories;
     }
 
     @Override
     public void update() {
-        --condition;
+        condition.setValue(condition.getValue() - 1);
         super.update();
     }
 
-    
-    
 }

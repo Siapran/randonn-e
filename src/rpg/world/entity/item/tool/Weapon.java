@@ -3,18 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rpg.world.entity.item;
+package rpg.world.entity.item.tool;
 
 import rpg.utils.Holder;
 import rpg.utils.Named;
-import rpg.world.entity.Item;
+import rpg.world.entity.item.Tool;
 
-@Named(name = "outil")
-public abstract class Tool extends Item {    
+@Named(name = "arme")
+public abstract class Weapon extends Tool {
 
-    public Tool(Holder holder, int condition, int weight) {
+    public Weapon(Holder holder, int condition, int weight) {
         super(holder, condition, weight);
     }
     
+    public abstract int getDamage();
     
 }

@@ -5,13 +5,10 @@
  */
 package rpg.utils;
 
-import rpg.world.Entity;
-
 /**
  *
  * @author siapran
  */
-public interface Holder {
-    public Class<? extends Entity> getHoldCapability();
-    public Tracker getTracker();
+public @interface Named {
+    String name();
 }

@@ -8,7 +8,9 @@ package rpg.world.entity;
 import rpg.world.entity.container.Corpse;
 import rpg.world.Location;
 import rpg.rules.Action;
+import rpg.utils.Bound;
 import rpg.utils.Holder;
+import rpg.utils.Named;
 import rpg.utils.Tracker;
 import rpg.world.Entity;
 import rpg.world.World;
@@ -17,15 +19,33 @@ import rpg.world.World;
  *
  * @author siapran
  */
+@Named(name = "acteur")
 public abstract class Actor extends Entity implements Holder {
 
-    private double health;
-    private double bleedingTime;
+    public static final int STATUS_MAX = 1000;
+
+    private final Bound<Integer> health;
+    private final Bound<Integer> warmth;
+    private final Bound<Integer> weariness;
+    private final Bound<Integer> hunger;
+    private final Bound<Integer> thirst;
+
+    private int bleedingTime;
     private Tracker inventory;
-    private Action currentAction = null;
+
+    Action currentAction = null;
 
     public Actor(Location currentLocation) {
         super(currentLocation);
+        health = new Bound<>(STATUS_MAX, 0, STATUS_MAX);
+        warmth = new Bound<>(STATUS_MAX, 0, STATUS_MAX);
+        weariness = new Bound<>(STATUS_MAX, 0, STATUS_MAX);
+        hunger = new Bound<>(STATUS_MAX, 0, STATUS_MAX);
+        thirst = new Bound<>(STATUS_MAX, 0, STATUS_MAX);
+    }
+
+    public boolean isDead() {
+        return getHealth() == 0;
     }
 
     public void say(String message) {
@@ -48,19 +68,57 @@ public abstract class Actor extends Entity implements Holder {
         return Item.class;
     }
 
-    public double getHealth() {
-        return health;
+    public abstract int getDamagePerTurn();
+
+    public int getHealth() {
+        return health.getValue();
     }
 
-    public void setHealth(double health) {
-        this.health = health;
+    public void setHealth(int health) {
+        this.health.setValue(health);
     }
 
-    public double getBleedingTime() {
+    public int getWarmth() {
+        return warmth.getValue();
+    }
+
+    public void setWarmth(int warmth) {
+        this.warmth.setValue(warmth);
+    }
+
+    public int getWeariness() {
+        return weariness.getValue();
+    }
+
+    public void setWeariness(int weariness) {
+        this.weariness.setValue(weariness);
+    }
+
+    public int getHunger() {
+        return hunger.getValue();
+    }
+
+    public void setHunger(int hunger) {
+        this.hunger.setValue(hunger);
+    }
+
+    public Action getCurrentAction() {
+        return currentAction;
+    }
+
+    public int getThirst() {
+        return thirst.getValue();
+    }
+
+    public void setThirst(int thirst) {
+        this.thirst.setValue(thirst);
+    }
+
+    public int getBleedingTime() {
         return bleedingTime;
     }
 
-    public void setBleedingTime(double bleedingTime) {
+    public void setBleedingTime(int bleedingTime) {
         this.bleedingTime = bleedingTime;
     }
 
@@ -68,17 +126,62 @@ public abstract class Actor extends Entity implements Holder {
         return inventory;
     }
 
+    public void setAction(Action action) {
+        currentAction = action;
+    }
+
     @Override
     public void update() {
+
+        if (currentAction != null) {
+            currentAction.update();
+        }
+        // loop allows for zero-cost actions
+        while (currentAction == null || currentAction.isDone()) {
+            decideNewAction();
+        }
+
+        // apply room temperature and windchill
+        setWarmth(getWarmth() + getCurrentLocation().getTemperature() + getCurrentLocation().getWind());
+        // TODO: temperature bonusses
+        if (getWarmth() <= 0) {
+            setHealth(getHealth() - 1);
+        }
+
+        // other actions increase fatigue
+        setWeariness(getWeariness() - 1);
+        if (getWeariness() <= 0) {
+            setHealth(getHealth() - 1);
+        }
+
+        // other actions increase hunger
+        setHunger(getHunger() - 1);
+        if (getHunger() <= 0) {
+            setHealth(getHealth() - 1);
+        }
+
+        // other actions increase thirst
+        setThirst(getThirst() - 1);
+        if (getThirst() <= 0) {
+            setHealth(getHealth() - 1);
+        }
+
+        // bleeding away!
         if (bleedingTime > 0) {
-            --health;
+            setHealth(getHealth() - 1);
             --bleedingTime;
             if (bleedingTime < 0) {
                 bleedingTime = 0;
             }
         }
-        if (health <= 0) {
-            health = 0;
+
+        if (getWarmth() > 0 && getWeariness() > 0 && getHunger() > 0 && getThirst() > 0 && bleedingTime == 0) {
+            setHealth(getHealth() + 1);
+        }
+
+        // are you dead yet?
+        if (health.eq(0)) {
+            // yep
             destroy();
         }
     }
@@ -87,5 +190,7 @@ public abstract class Actor extends Entity implements Holder {
     public Tracker getTracker() {
         return inventory;
     }
+
+    public abstract void decideNewAction();
 
 }

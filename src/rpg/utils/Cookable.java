@@ -5,13 +5,11 @@
  */
 package rpg.utils;
 
-import rpg.world.Entity;
-
 /**
  *
  * @author siapran
  */
-public interface Holder {
-    public Class<? extends Entity> getHoldCapability();
-    public Tracker getTracker();
+@Named(name = "cuisinable")
+public interface Cookable {
+    public void replaceWithCookedProduct();
 }

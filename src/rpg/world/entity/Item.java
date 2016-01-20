@@ -5,25 +5,38 @@
  */
 package rpg.world.entity;
 
+import rpg.utils.Bound;
 import rpg.utils.Holder;
+import rpg.utils.Named;
 import rpg.world.Entity;
 
+@Named(name = "objet")
 public abstract class Item extends Entity {
 
-    protected double condition;
-    protected double weight;
+    public static final int CONDITION_MAX = 10000;
+    
+    protected Bound<Integer> condition;
+    protected int weight;
 
-    public Item(Holder holder, double condition, double weight) {
+    public Item(Holder holder, int condition, int weight) {
         super(holder);
-        this.condition = condition;
+        this.condition = new Bound(condition, 0, CONDITION_MAX);
         this.weight = weight;
     }
 
     @Override
     public void update() {
-        if (condition <= 0) {
+        if (condition.lte(0)) {
             destroy();
         }
+    }
+    
+    public void setCondition(int condition) {
+        this.condition.setValue(condition);
+    }
+    
+    public int getCondition() {
+        return condition.getValue();
     }
     
     

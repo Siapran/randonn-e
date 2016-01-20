@@ -5,15 +5,20 @@
  */
 package rpg.rules;
 
+import rpg.rules.action.Craft;
+import rpg.rules.action.GoTo;
+import rpg.utils.Named;
+
 /**
  *
  * @author siapran
  */
+@Named(name = "compétence")
 public enum Skill {
 
     
     HUNTING("Chasser", GoTo.class),
-    CRAFTING("Bricoler", GoTo.class),
+    CRAFTING("Bricoler", Craft.class),
     FIREMAKING("Allumer un feu.", GoTo.class);
 
     private final String name;

@@ -6,15 +6,16 @@
 package rpg.world.entity.item;
 
 import rpg.utils.Holder;
+import rpg.utils.Named;
 import rpg.world.entity.Item;
 
-
+@Named(name = "combustible")
 public abstract class Fuel extends Item {
 
-    private final double burnTime;
-    private final double flamability;
+    private final int burnTime;
+    private final int flamability;
 
-    public Fuel(double burnTime, double flamability, Holder holder, double condition, double weight) {
+    public Fuel(int burnTime, int flamability, Holder holder, int condition, int weight) {
         super(holder, condition, weight);
         this.burnTime = burnTime;
         this.flamability = flamability;

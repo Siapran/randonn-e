@@ -9,8 +9,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import rpg.utils.Holder;
 import rpg.utils.InsufficientHoldCapability;
+import rpg.utils.Named;
 
-public abstract class Entity extends Trackable {
+@Named(name = "entité")
+public abstract class Entity extends Tracked {
 
     private Holder holder;
 
@@ -44,11 +46,13 @@ public abstract class Entity extends Trackable {
 
     @Override
     public void destroy() {
+
         try {
             moveTo(null); // remove self from holder
         } catch (InsufficientHoldCapability ex) {
-            // unreachable
+            Logger.getLogger(Entity.class.getName()).log(Level.SEVERE, null, ex);
         }
+
         super.destroy();
     }
 

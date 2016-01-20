@@ -5,6 +5,7 @@
  */
 package rpg.world;
 
+import rpg.utils.Named;
 import rpg.utils.Tracker;
 
 
@@ -13,6 +14,7 @@ import rpg.utils.Tracker;
  *
  * @author siapran
  */
+@Named(name = "le monde")
 public class World {
     
     private final Tracker tracked;
@@ -40,7 +42,7 @@ public class World {
         });
     }
     
-    public static void spawn(Trackable trackable) {
+    public static void spawn(Tracked trackable) {
         // lol we don't do anything actually
         // I just needed this method to improve readability
     }

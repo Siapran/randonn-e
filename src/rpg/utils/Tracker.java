@@ -6,16 +6,15 @@
 package rpg.utils;
 
 import java.util.HashSet;
-import rpg.world.Trackable;
+import rpg.world.Tracked;
 
 /**
  *
  * @author siapran
- * @param <T>
  */
-public class Tracker extends HashSet<Trackable> {
+public class Tracker extends HashSet<Tracked> {
     
-    public Tracker filterType(Class<? extends Trackable> type) {
+    public Tracker filterType(Class<? extends Tracked> type) {
         Tracker res = new Tracker();
         stream().filter((entity) -> (type.isInstance(entity))).forEach((entity) -> {
             res.add(type.cast(entity));

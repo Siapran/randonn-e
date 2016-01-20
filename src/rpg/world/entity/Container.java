@@ -6,10 +6,12 @@
 package rpg.world.entity;
 
 import rpg.utils.Holder;
+import rpg.utils.Named;
 import rpg.utils.Tracker;
 import rpg.world.Entity;
 import rpg.world.Location;
 
+@Named(name = "conteneur")
 public abstract class Container extends Entity implements Holder {
 
     private final Tracker contents;

@@ -5,14 +5,17 @@
  */
 package rpg.world;
 
+import rpg.utils.Named;
+
 /**
  *
  * @author siapran
  */
-public abstract class Trackable {
+@Named(name = "connu")
+public abstract class Tracked {
 
     @SuppressWarnings("LeakingThisInConstructor")
-    public Trackable() {
+    public Tracked() {
         World.getInstance().getTracked().add(this); // register self to World
     }
 

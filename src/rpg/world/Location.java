@@ -6,17 +6,19 @@
 package rpg.world;
 
 import rpg.utils.Holder;
+import rpg.utils.Named;
 import rpg.utils.Tracker;
 
-public abstract class Location extends Trackable implements Holder {
+@Named(name = "lieu")
+public abstract class Location extends Tracked implements Holder {
 
     private final String name;
     private final Tracker edges;
     private final Tracker contents;
-    private double temperature;
-    private double wind;
+    private int temperature;
+    private int wind;
 
-    public Location(String name, Tracker edges, double temperature, double windchill) {
+    public Location(String name, Tracker edges, int temperature, int windchill) {
         this.name = name;
         this.edges = edges;
         contents = new Tracker();
@@ -24,19 +26,19 @@ public abstract class Location extends Trackable implements Holder {
         this.wind = windchill;
     }
 
-    public double getTemperature() {
+    public int getTemperature() {
         return temperature;
     }
 
-    public void setTemperature(double temperature) {
+    public void setTemperature(int temperature) {
         this.temperature = temperature;
     }
 
-    public double getWind() {
+    public int getWind() {
         return wind;
     }
 
-    public void setWind(double wind) {
+    public void setWind(int wind) {
         this.wind = wind;
     }
 
@@ -59,4 +61,10 @@ public abstract class Location extends Trackable implements Holder {
         return name;
     }
 
+    public void addEdge(Location location) {
+        this.getEdges().add(location);
+        location.getEdges().add(this);
+    }
+    
+    public abstract void init();
 }

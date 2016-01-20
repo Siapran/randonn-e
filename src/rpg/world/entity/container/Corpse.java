@@ -5,10 +5,12 @@
  */
 package rpg.world.entity.container;
 
+import rpg.utils.Named;
 import rpg.utils.Tracker;
 import rpg.world.Location;
 import rpg.world.entity.Container;
 
+@Named(name = "cadavre")
 public class Corpse extends Container {
 
     private final String name;
@@ -24,8 +26,6 @@ public class Corpse extends Container {
         this.name = name;
     }
 
-    
-
     @Override
     public void update() {
         super.update();
@@ -37,9 +37,7 @@ public class Corpse extends Container {
 
     @Override
     public String toString() {
-        return name;
+        return "Cadavre (" + name + ")";
     }
-    
-    
 
 }

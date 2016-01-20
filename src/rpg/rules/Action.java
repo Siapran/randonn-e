@@ -5,45 +5,40 @@
  */
 package rpg.rules;
 
-import java.util.HashMap;
-import java.util.Map;
+import rpg.utils.Named;
 import rpg.world.entity.Actor;
-import rpg.world.Location;
 
 /**
  *
  * @author siapran
  */
+@Named(name = "action")
 public abstract class Action {
-
-    public static final Map<String, Class<? extends Action>> NAMES = new HashMap<>();
     
     public static final double NEVER = 0;
     public static final double ALWAYS = 100;
     
-    private final Location location;
     private final Actor actor;
+    protected int timeleft;
 
-    public Action(Location location, Actor actor) {
-        this.location = location;
+    public Action(Actor actor) {
         this.actor = actor;
     }
 
-    public abstract void parse(String[] args);
-
-    public Location getLocation() {
-        return location;
+    protected final void postConstructionInit() {
+        timeleft = getCost();
     }
+    
+    public abstract void update();
 
-    public abstract void doEffect();
-
+    public boolean isDone() {
+        return timeleft <= 0;
+    }
+    
     public abstract int getCost(); // nombre de tours nécessaires à l'action
 
-    public Actor getActor() {
+    public final Actor getActor() {
         return actor;
     }
-
-
-    public abstract double getProbability(); // probabilité de réussir cette action pour ce contexte
 
 }
