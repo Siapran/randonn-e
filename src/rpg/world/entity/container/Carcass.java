@@ -10,18 +10,18 @@ import rpg.utils.Tracker;
 import rpg.world.Location;
 import rpg.world.entity.Container;
 
-@Named(name = "cadavre")
-public class Corpse extends Container {
+@Named(name = "carcasse")
+public class Carcass extends Container {
 
     private final String name;
-    double condition;
+    int condition = 1000;
 
-    public Corpse(String name, Location location) {
+    public Carcass(String name, Location location) {
         super(location);
         this.name = name;
     }
 
-    public Corpse(String name, Location location, Tracker contents) {
+    public Carcass(String name, Location location, Tracker contents) {
         super(location, contents);
         this.name = name;
     }
@@ -37,7 +37,13 @@ public class Corpse extends Container {
 
     @Override
     public String toString() {
-        return "Cadavre (" + name + ")";
+        return "carcasse";
     }
 
+    @Override
+    public String description() {
+        return super.description() + "\ntype: " + name;
+    }
+
+    
 }

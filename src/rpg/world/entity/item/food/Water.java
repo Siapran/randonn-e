@@ -9,16 +9,17 @@ import rpg.utils.Holder;
 import rpg.utils.Named;
 import rpg.world.entity.item.Food;
 
-@Named(name = "canette de soda")
-public class Soda extends Food {
+@Named(name = "bouteille d'eau")
+public class Water extends Food {
 
-    public Soda(Holder holder, int condition) {
-        super(250, 250, holder, condition, 250);
+    public Water(Holder holder, int condition, int weight) {
+        super(0, weight, holder, condition, weight);
     }
 
     @Override
     public String toString() {
-        return "canette de soda";
+        return "bouteille d'eau";
     }
+    
     
 }

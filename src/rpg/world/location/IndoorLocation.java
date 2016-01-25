@@ -6,7 +6,6 @@
 package rpg.world.location;
 
 import rpg.utils.Named;
-import rpg.utils.Tracker;
 import rpg.world.Location;
 
 /**
@@ -16,8 +15,8 @@ import rpg.world.Location;
 @Named(name = "interieur")
 public abstract class IndoorLocation extends Location {
 
-    public IndoorLocation(String name, Tracker edges, int temperature, int windchill) {
-        super(name, edges, temperature, windchill);
+    public IndoorLocation(String name) {
+        super(name, 10, 0);
     }
 
     @Override

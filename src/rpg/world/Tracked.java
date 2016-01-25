@@ -27,5 +27,7 @@ public abstract class Tracked {
     public void destroy() {
         World.getInstance().getTracked().remove(this); // unregister self from World
     }
+    
+    public abstract String description();
 
 }

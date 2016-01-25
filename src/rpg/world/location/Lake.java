@@ -7,12 +7,13 @@ package rpg.world.location;
 
 import rpg.utils.Named;
 
-@Named(name = "maison")
-public class House extends IndoorLocation {
+@Named(name = "lac")
+public class Lake extends OutdoorLocation {
 
-    public House(String name) {
+    public Lake(String name) {
         super(name);
     }
+
     @Override
     public void init() {
         

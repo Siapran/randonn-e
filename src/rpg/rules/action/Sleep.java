@@ -8,6 +8,7 @@ package rpg.rules.action;
 import rpg.rules.Action;
 import rpg.utils.Named;
 import rpg.world.entity.Actor;
+import rpg.world.entity.actor.Player;
 
 @Named(name = "dormir")
 public class Sleep extends Action {
@@ -18,6 +19,10 @@ public class Sleep extends Action {
         super(actor);
         this.time = time;
         postConstructionInit();
+        if (actor instanceof Player) {
+            Player player = (Player) actor;
+            System.out.println("Vous dormez " + time + " minutes.");
+        }
     }
 
     @Override

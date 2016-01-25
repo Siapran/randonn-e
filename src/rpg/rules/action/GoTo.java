@@ -10,6 +10,7 @@ import rpg.utils.InsufficientHoldCapability;
 import rpg.utils.Named;
 import rpg.world.entity.Actor;
 import rpg.world.Location;
+import rpg.world.entity.actor.Player;
 
 @Named(name = "aller à")
 public class GoTo extends Action {
@@ -25,6 +26,10 @@ public class GoTo extends Action {
     public void doEffect() {
         try {
             getActor().moveTo(location);
+            if (getActor() instanceof Player) {
+                Player player = (Player) getActor();
+                System.out.println("Vous allez vers " + location + ".");
+            }
         } catch (InsufficientHoldCapability ex) {
             // never reached
         }
@@ -35,7 +40,6 @@ public class GoTo extends Action {
         return 5; // TODO: implement distance?
         // TODO: implement encumbrance
     }
-
 
     @Override
     public void update() {

@@ -5,11 +5,13 @@
  */
 package rpg.world.entity;
 
+import java.util.Iterator;
 import rpg.utils.Holder;
 import rpg.utils.Named;
 import rpg.utils.Tracker;
 import rpg.world.Entity;
 import rpg.world.Location;
+import rpg.world.Tracked;
 
 @Named(name = "conteneur")
 public abstract class Container extends Entity implements Holder {
@@ -24,6 +26,10 @@ public abstract class Container extends Entity implements Holder {
     public Container(Location location, Tracker contents) {
         super(location);
         this.contents = contents;
+    }
+
+    public Location getLocation() {
+        return (Location) getHolder();
     }
 
     public Tracker getContents() {
@@ -51,6 +57,24 @@ public abstract class Container extends Entity implements Holder {
     @Override
     public Tracker getTracker() {
         return contents;
+    }
+
+    @Override
+    public String description() {
+        String res = this.toString();
+        if (!getTracker().isEmpty()) {
+            res += "\ncontient:";
+            for (Iterator<Tracked> iterator = contents.iterator(); iterator.hasNext();) {
+                Tracked tracked = (Tracked) iterator.next();
+                res += " " + tracked;
+                if (iterator.hasNext()) {
+                    res += ",";
+                } else {
+                    res += ".";
+                }
+            }
+        }
+        return res;
     }
 
 }

@@ -6,18 +6,20 @@
 package rpg.world.location;
 
 import rpg.utils.Named;
-import rpg.utils.Tracker;
 import rpg.world.Location;
+import rpg.world.World;
 
 @Named(name = "dehors")
 public abstract class OutdoorLocation extends Location {
 
-    public OutdoorLocation(String name, Tracker edges, int temperature, int windchill) {
-        super(name, edges, temperature, windchill);
+    public OutdoorLocation(String name) {
+        super(name, World.getInstance().getOutdoorTemperature(), World.getInstance().getWind());
     }
 
     @Override
     public void update() {
+        setTemperature(World.getInstance().getOutdoorTemperature());
+        setWind(World.getInstance().getWind());
     }
-    
+
 }

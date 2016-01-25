@@ -26,10 +26,13 @@ public abstract class Food extends Item {
         this.calories = calories;
         this.moisture = moisture;
     }
-    
 
     public int getCalories() {
         return calories;
+    }
+
+    public int getMoisture() {
+        return moisture;
     }
 
     @Override
@@ -37,5 +40,7 @@ public abstract class Food extends Item {
         condition.setValue(condition.getValue() - 1);
         super.update();
     }
+    
+    
 
 }

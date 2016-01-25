@@ -5,6 +5,7 @@
  */
 package rpg.utils;
 
+import java.util.Collection;
 import java.util.HashSet;
 import rpg.world.Tracked;
 
@@ -13,7 +14,14 @@ import rpg.world.Tracked;
  * @author siapran
  */
 public class Tracker extends HashSet<Tracked> {
-    
+
+    public Tracker() {
+    }
+
+    public Tracker(Collection<? extends Tracked> clctn) {
+        super(clctn);
+    }
+
     public Tracker filterType(Class<? extends Tracked> type) {
         Tracker res = new Tracker();
         stream().filter((entity) -> (type.isInstance(entity))).forEach((entity) -> {

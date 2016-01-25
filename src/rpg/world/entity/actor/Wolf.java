@@ -6,9 +6,11 @@
 package rpg.world.entity.actor;
 
 import java.util.Optional;
+import rpg.rules.Wait;
 import rpg.rules.action.Attack;
 import rpg.rules.action.Consume;
 import rpg.rules.action.GoTo;
+import rpg.rules.action.Sleep;
 import rpg.utils.Named;
 import rpg.utils.Tracker;
 import rpg.world.Location;
@@ -18,7 +20,7 @@ import rpg.world.entity.Actor;
 import static rpg.world.entity.Actor.STATUS_MAX;
 import rpg.world.entity.Container;
 import rpg.world.entity.Item;
-import rpg.world.entity.container.Corpse;
+import rpg.world.entity.container.Carcass;
 import rpg.world.entity.item.Food;
 import rpg.world.entity.item.food.RawMeat;
 import rpg.world.location.OutdoorLocation;
@@ -48,8 +50,10 @@ public class Wolf extends Animal {
     @Override
     public void decideNewAction() {
         
+        setAction(null);
+
         // are we in imminent danger?
-        if (getBleedingTime() >= (STATUS_MAX - getHealth()) / 2) {
+        if (getBleedingTime() >= getHealth() / 2) {
             // fuckfuckfuckfuckfuck
             Optional<Tracked> destination = getCurrentLocation().getEdges()
                     .filterType(OutdoorLocation.class).stream().findAny();
@@ -79,7 +83,7 @@ public class Wolf extends Animal {
         }
 
         // look for raw meat in local corpses
-        Tracker containers = getCurrentLocation().getTracker().filterType(Corpse.class);
+        Tracker containers = getCurrentLocation().getTracker().filterType(Carcass.class);
         for (Tracked tracked : containers) {
             Container container = (Container) tracked;
             target = container.getTracker().filterType(RawMeat.class).stream().findAny();
@@ -101,7 +105,11 @@ public class Wolf extends Animal {
                     ).findAny();
             if (destination.isPresent()) {
                 setAction(new GoTo((Location) destination.get(), this));
+                return;
             }
+
+            // or just wait
+            setAction(new Sleep(5, this));
         }
     }
 

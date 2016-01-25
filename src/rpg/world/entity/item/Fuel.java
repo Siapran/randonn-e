@@ -21,6 +21,14 @@ public abstract class Fuel extends Item {
         this.flamability = flamability;
     }
 
+    public int getBurnTime() {
+        return burnTime;
+    }
+
+    public int getFlamability() {
+        return flamability;
+    }
+
     
     
 }

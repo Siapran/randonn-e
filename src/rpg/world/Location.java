@@ -5,9 +5,11 @@
  */
 package rpg.world;
 
+import java.util.Iterator;
 import rpg.utils.Holder;
 import rpg.utils.Named;
 import rpg.utils.Tracker;
+import rpg.world.entity.container.Fire;
 
 @Named(name = "lieu")
 public abstract class Location extends Tracked implements Holder {
@@ -18,9 +20,9 @@ public abstract class Location extends Tracked implements Holder {
     private int temperature;
     private int wind;
 
-    public Location(String name, Tracker edges, int temperature, int windchill) {
+    public Location(String name, int temperature, int windchill) {
         this.name = name;
-        this.edges = edges;
+        this.edges = new Tracker();
         contents = new Tracker();
         this.temperature = temperature;
         this.wind = windchill;
@@ -28,6 +30,12 @@ public abstract class Location extends Tracked implements Holder {
 
     public int getTemperature() {
         return temperature;
+    }
+
+    public int getTotalTemperature() {
+        int total = temperature + wind;
+        total += getTracker().filterType(Fire.class).stream().count() * 20;
+        return total;
     }
 
     public void setTemperature(int temperature) {
@@ -65,6 +73,44 @@ public abstract class Location extends Tracked implements Holder {
         this.getEdges().add(location);
         location.getEdges().add(this);
     }
-    
+
     public abstract void init();
+
+    @Override
+    public void update() {
+
+    }
+
+    @Override
+    public String description() {
+        String res = name;
+        res += "\ntempérature: " + getTemperature();
+        res += "\nfacteur vent: " + getWind();
+        if (!getTracker().isEmpty()) {
+            res += "\ncontient:";
+            for (Iterator<Tracked> iterator = contents.iterator(); iterator.hasNext();) {
+                Tracked tracked = (Tracked) iterator.next();
+                res += " " + tracked;
+                if (iterator.hasNext()) {
+                    res += ",";
+                } else {
+                    res += ".";
+                }
+            }
+        }
+        if (!getEdges().isEmpty()) {
+            res += "\nmène à:";
+            for (Iterator<Tracked> iterator = edges.iterator(); iterator.hasNext();) {
+                Location location = (Location) iterator.next();
+                res += " " + location;
+                if (iterator.hasNext()) {
+                    res += ",";
+                } else {
+                    res += ".";
+                }
+            }
+        }
+        return res;
+    }
+
 }

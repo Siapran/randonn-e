@@ -8,6 +8,7 @@ package rpg.rules.action;
 import rpg.rules.Action;
 import rpg.utils.Named;
 import rpg.world.entity.Actor;
+import rpg.world.entity.actor.Player;
 import rpg.world.entity.item.Food;
 
 @Named(name = "consommer")
@@ -26,8 +27,13 @@ public class Consume extends Action {
         --timeleft;
         if (timeleft <= 0) {
             Actor actor = getActor();
-            actor.setHunger((int) (actor.getHunger() + food.getCalories()));
+            actor.setHunger(actor.getHunger() + food.getCalories());
+            actor.setThirst(actor.getThirst() + food.getMoisture());
             food.destroy();
+            if (actor instanceof Player) {
+                Player player = (Player) actor;
+                System.out.println("Vous mangez/buvez: " + food + ".");
+            }
         }
     }
 
@@ -35,5 +41,5 @@ public class Consume extends Action {
     public int getCost() {
         return 2;
     }
-    
+
 }

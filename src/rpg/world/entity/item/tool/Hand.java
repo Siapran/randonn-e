@@ -7,19 +7,32 @@ package rpg.world.entity.item.tool;
 
 import rpg.utils.Holder;
 import rpg.utils.Named;
-import rpg.world.entity.item.Tool;
 
 @Named(name = "mains nues")
-public abstract class Hand extends Tool {
+public class Hand extends Weapon {
 
-    public Hand(Holder holder) {
+    private Hand(Holder holder) {
         super(holder, CONDITION_MAX, 0);
     }
     
-    // this class should never be instanciated
+    // dummy instance to simplify semantics
+    public static Hand getInstance() {
+        return HandHolder.INSTANCE;
+    }
+
+    // here, hold my hand
+    private static class HandHolder {
+        private static final Hand INSTANCE = new Hand(null);
+    }
+    
     @Override
     public String toString() {
         return "mains nues";
+    }
+
+    @Override
+    public int getDamage() {
+        return 50;
     }
     
 }

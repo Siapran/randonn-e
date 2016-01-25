@@ -22,6 +22,7 @@ public class Knife extends Weapon {
 
     @Override
     public int getDamage() {
+        // more damage than a wolf
         return 150;
     }
 

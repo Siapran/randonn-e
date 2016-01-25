@@ -6,7 +6,6 @@
 package rpg.rules.action;
 
 import rpg.rules.Action;
-import rpg.rules.action.Defend;
 import rpg.utils.Named;
 import rpg.world.entity.Actor;
 
@@ -35,5 +34,5 @@ public class Attack extends Action {
     public int getCost() {
         return 1;
     }
-    
+
 }

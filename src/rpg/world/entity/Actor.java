@@ -5,13 +5,14 @@
  */
 package rpg.world.entity;
 
-import rpg.world.entity.container.Corpse;
+import rpg.world.entity.container.Carcass;
 import rpg.world.Location;
 import rpg.rules.Action;
 import rpg.utils.Bound;
 import rpg.utils.Holder;
 import rpg.utils.Named;
 import rpg.utils.Tracker;
+import rpg.utils.Util;
 import rpg.world.Entity;
 import rpg.world.World;
 
@@ -31,17 +32,19 @@ public abstract class Actor extends Entity implements Holder {
     private final Bound<Integer> thirst;
 
     private int bleedingTime;
-    private Tracker inventory;
+    private final Tracker inventory;
 
     Action currentAction = null;
 
     public Actor(Location currentLocation) {
         super(currentLocation);
+        inventory = new Tracker();
         health = new Bound<>(STATUS_MAX, 0, STATUS_MAX);
         warmth = new Bound<>(STATUS_MAX, 0, STATUS_MAX);
         weariness = new Bound<>(STATUS_MAX, 0, STATUS_MAX);
         hunger = new Bound<>(STATUS_MAX, 0, STATUS_MAX);
         thirst = new Bound<>(STATUS_MAX, 0, STATUS_MAX);
+        bleedingTime = 0;
     }
 
     public boolean isDead() {
@@ -59,7 +62,8 @@ public abstract class Actor extends Entity implements Holder {
     @Override
     public void destroy() {
         // on death, spawn corspe with inventory at current location
-        World.spawn(new Corpse(this.toString(), (Location) getHolder(), inventory));
+        
+        World.spawn(new Carcass(this.toString(), (Location) getHolder(), inventory));
         super.destroy();
     }
 
@@ -137,12 +141,15 @@ public abstract class Actor extends Entity implements Holder {
             currentAction.update();
         }
         // loop allows for zero-cost actions
-        while (currentAction == null || currentAction.isDone()) {
+        while ((currentAction == null || currentAction.isDone())) {
             decideNewAction();
+            if (isDead()) {
+                return;
+            }
         }
 
         // apply room temperature and windchill
-        setWarmth(getWarmth() + getCurrentLocation().getTemperature() + getCurrentLocation().getWind());
+        setWarmth(getWarmth() + getCurrentLocation().getTotalTemperature());
         // TODO: temperature bonusses
         if (getWarmth() <= 0) {
             setHealth(getHealth() - 1);
@@ -192,5 +199,24 @@ public abstract class Actor extends Entity implements Holder {
     }
 
     public abstract void decideNewAction();
+
+    @Override
+    public String description() {
+        String res = "";
+        res += Util.capitalize(this.toString());
+        if (getHealth() <= STATUS_MAX / 2) {
+            res += ", blessé";
+            if (getHealth() <= STATUS_MAX / 4) {
+                res += " gravement";
+            }
+        }
+        if (!(getWarmth() > 0 && getWeariness() > 0 && getHunger() > 0 && getThirst() > 0)) {
+            res += ", mourrant";
+        }
+        if (bleedingTime > 0) {
+            res += ", entrain de saigner";
+        }
+        return res + ".";
+    }
 
 }

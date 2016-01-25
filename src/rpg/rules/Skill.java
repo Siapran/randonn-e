@@ -6,7 +6,8 @@
 package rpg.rules;
 
 import rpg.rules.action.Craft;
-import rpg.rules.action.GoTo;
+import rpg.rules.action.Defend;
+import rpg.rules.action.StartFire;
 import rpg.utils.Named;
 
 /**
@@ -17,9 +18,9 @@ import rpg.utils.Named;
 public enum Skill {
 
     
-    HUNTING("Chasser", GoTo.class),
+    HUNTING("Chasser", Defend.class),
     CRAFTING("Bricoler", Craft.class),
-    FIREMAKING("Allumer un feu.", GoTo.class);
+    FIREMAKING("Allumer un feu.", StartFire.class);
 
     private final String name;
     private final Class<? extends Action> action;
@@ -33,5 +34,11 @@ public enum Skill {
     public String toString() {
         return name;
     }
+
+    public Class<? extends Action> getAction() {
+        return action;
+    }
+    
+    
 
 }
