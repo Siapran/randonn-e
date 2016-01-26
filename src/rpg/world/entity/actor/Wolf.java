@@ -21,6 +21,7 @@ import static rpg.world.entity.Actor.STATUS_MAX;
 import rpg.world.entity.Container;
 import rpg.world.entity.Item;
 import rpg.world.entity.container.Carcass;
+import rpg.world.entity.container.Fire;
 import rpg.world.entity.item.Food;
 import rpg.world.entity.item.food.RawMeat;
 import rpg.world.location.OutdoorLocation;
@@ -52,16 +53,16 @@ public class Wolf extends Animal {
         
         setAction(null);
 
+        // is there a fire here?
+        if (!getCurrentLocation().getTracker().filterType(Fire.class).isEmpty()) {
+            // scary!
+            if (flee()) return;
+        }
+        
         // are we in imminent danger?
         if (getBleedingTime() >= getHealth() / 2) {
             // fuckfuckfuckfuckfuck
-            Optional<Tracked> destination = getCurrentLocation().getEdges()
-                    .filterType(OutdoorLocation.class).stream().findAny();
-            if (destination.isPresent()) {
-                // I'm outta here
-                setAction(new GoTo((Location) destination.get(), this));
-                return;
-            }
+            if (flee()) return;
         }
 
         // attack potential prey
@@ -111,6 +112,17 @@ public class Wolf extends Animal {
             // or just wait
             setAction(new Sleep(5, this));
         }
+    }
+
+    protected boolean flee() {
+        Optional<Tracked> destination = getCurrentLocation().getEdges()
+                .filterType(OutdoorLocation.class).stream().findAny();
+        if (destination.isPresent()) {
+            // I'm outta here
+            setAction(new GoTo((Location) destination.get(), this));
+            return true;
+        }
+        return false;
     }
 
     @Override
