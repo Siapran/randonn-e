@@ -7,6 +7,7 @@ package rpg.rules.action;
 
 import rpg.rules.Action;
 import rpg.utils.Named;
+import rpg.utils.Util;
 import rpg.world.entity.Actor;
 
 @Named(name = "attaquer")
@@ -18,6 +19,7 @@ public class Attack extends Action {
         super(actor);
         this.target = target;
         postConstructionInit();
+        Util.AlertPlayer(target, "Un " + actor + " vous attaque!");
         target.setAction(new Defend(getActor(), target));
     }
 

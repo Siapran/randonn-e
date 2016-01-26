@@ -7,6 +7,7 @@ package rpg.rules.action;
 
 import rpg.rules.Action;
 import rpg.utils.Named;
+import rpg.utils.Util;
 import rpg.world.entity.Actor;
 import rpg.world.entity.actor.Player;
 import rpg.world.entity.item.Food;
@@ -30,10 +31,7 @@ public class Consume extends Action {
             actor.setHunger(actor.getHunger() + food.getCalories());
             actor.setThirst(actor.getThirst() + food.getMoisture());
             food.destroy();
-            if (actor instanceof Player) {
-                Player player = (Player) actor;
-                System.out.println("Vous mangez/buvez: " + food + ".");
-            }
+            Util.AlertPlayer(actor, "Vous mangez/buvez: " + food + ".");
         }
     }
 

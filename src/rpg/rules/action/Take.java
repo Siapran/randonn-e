@@ -10,9 +10,9 @@ import java.util.logging.Logger;
 import rpg.rules.Action;
 import rpg.utils.InsufficientHoldCapability;
 import rpg.utils.Named;
+import rpg.utils.Util;
 import rpg.world.entity.Actor;
 import rpg.world.entity.Item;
-import rpg.world.entity.actor.Player;
 
 @Named(name = "prendre")
 public class Take extends Action {
@@ -28,10 +28,7 @@ public class Take extends Action {
     public void doEffect() {
         try {
             item.moveTo(getActor());
-            if (getActor() instanceof Player) {
-                Player player = (Player) getActor();
-                System.out.println("Vous prenez: " + item + ".");
-            }
+            Util.AlertPlayer(getActor(), "Vous prenez: " + item + ".");
         } catch (InsufficientHoldCapability ex) {
             Logger.getLogger(Take.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -7,8 +7,9 @@ package rpg.rules.action;
 
 import rpg.rules.Action;
 import rpg.utils.Named;
+import rpg.utils.Util;
 import rpg.world.entity.Actor;
-import rpg.world.entity.actor.Player;
+import rpg.world.entity.actor.Human;
 
 @Named(name = "se défendre")
 public class Defend extends Action {
@@ -18,10 +19,9 @@ public class Defend extends Action {
     public Defend(Actor attacker, Actor actor) {
         super(actor);
         this.attacker = attacker;
-        if (actor instanceof Player) {
-            Player player = (Player) actor;
-            System.out.println("Un " + attacker + " vous attaque!");
-            System.out.println("Vous vous défendez avec " + player.getBestWeapon() + ".");
+        if (actor instanceof Human) {
+            Human human = (Human) actor;
+            Util.AlertPlayer(human, "Vous vous défendez avec " + human.getBestWeapon() + ".");
         }
     }
 

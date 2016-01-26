@@ -5,6 +5,8 @@
  */
 package rpg.world.entity.actor;
 
+import rpg.rules.Skill;
+import rpg.rules.SkillManager;
 import rpg.utils.Named;
 import rpg.world.entity.Actor;
 import rpg.world.Location;
@@ -18,10 +20,17 @@ import rpg.world.entity.item.tool.Weapon;
 public class Human extends Actor {
 
     private final String name;
+    private final SkillManager skillManager;
 
     public Human(String name, Location currentLocation) {
         super(currentLocation);
         this.name = name;
+        skillManager = new SkillManager();
+        skillManager.set(Skill.FIREMAKING, 50);
+    }
+
+    public SkillManager getSkillManager() {
+        return skillManager;
     }
 
     @Override
@@ -57,7 +66,7 @@ public class Human extends Actor {
             return Hand.getInstance();
         }
     }
-    
+
     @Override
     public int getDamagePerTurn() {
         return getBestWeapon().getDamage();

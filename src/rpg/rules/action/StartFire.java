@@ -6,7 +6,10 @@
 package rpg.rules.action;
 
 import rpg.rules.Action;
+import rpg.rules.Skill;
+import rpg.utils.Util;
 import rpg.world.entity.Actor;
+import rpg.world.entity.actor.Human;
 import rpg.world.entity.actor.Player;
 import rpg.world.entity.container.Fire;
 import rpg.world.entity.item.Fuel;
@@ -15,7 +18,7 @@ public class StartFire extends Action {
 
     private final Fuel fuel;
 
-    public StartFire(Fuel fuel, Actor actor) {
+    public StartFire(Fuel fuel, Human actor) {
         super(actor);
         this.fuel = fuel;
         postConstructionInit();
@@ -26,14 +29,28 @@ public class StartFire extends Action {
     public void update() {
         --timeleft;
         if (timeleft <= 0) {
-            Fire fire = new Fire(0, getActor().getCurrentLocation());
-            fire.addFuel(fuel);
-            if (getActor() instanceof Player) {
-                Player player = (Player) getActor();
-                System.out.println("Vous avez allumé un feu.");
+            Actor actor = getActor();
+            Human human = (Human) actor;
+
+            int success_chance = human.getSkillManager().get(Skill.FIREMAKING);
+            success_chance += fuel.getFlamability();
+            success_chance += actor.getCurrentLocation().getWind();
+            success_chance /= 2;
+
+            if (Util.rand(success_chance)) {
+                // create the fire
+                Fire fire = new Fire(0, actor.getCurrentLocation());
+                fire.addFuel(fuel);
+
+                // increment skill
+                human.getSkillManager().increment(Skill.HUNTING);
+                Util.AlertPlayer(actor, "Vous avez allumé un feu.");
+            } else {
+                Util.AlertPlayer(actor, "Vous n'avez pas réussi à maintenir une flamme assez longtemps...");
             }
         }
     }
+
 
     @Override
     public int getCost() {

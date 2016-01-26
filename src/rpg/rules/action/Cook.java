@@ -11,8 +11,9 @@ import rpg.rules.Action;
 import rpg.utils.Cookable;
 import rpg.utils.InsufficientHoldCapability;
 import rpg.utils.Named;
-import rpg.world.entity.Actor;
+import rpg.utils.Util;
 import rpg.world.entity.Item;
+import rpg.world.entity.actor.Human;
 import rpg.world.entity.actor.Player;
 import rpg.world.entity.container.Fire;
 
@@ -22,14 +23,11 @@ public class Cook extends Action {
     private final Cookable cookable;
     private final Fire fire;
 
-    public Cook(Cookable cookable, Fire fire, Actor actor) {
+    public Cook(Cookable cookable, Fire fire, Human actor) {
         super(actor);
         this.cookable = cookable;
         this.fire = fire;
-        if (actor instanceof Player) {
-            Player player = (Player) actor;
-            System.out.println("Vous faîtes cuire: " + cookable);
-        }
+        Util.AlertPlayer(actor, "Vous faîtes cuire: " + cookable);
     }
 
     @Override

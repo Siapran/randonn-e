@@ -6,6 +6,8 @@
 package rpg.utils;
 
 import java.util.Random;
+import rpg.world.entity.Actor;
+import rpg.world.entity.actor.Player;
 
 /**
  *
@@ -25,6 +27,13 @@ public class Util {
 
     public static Random getGenerator() {
         return generator;
+    }
+
+    public static void AlertPlayer(Actor actor, String message) {
+        if (actor instanceof Player) {
+            Player player = (Player) actor;
+            System.out.println(message);
+        }
     }
     
     

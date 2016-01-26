@@ -19,17 +19,22 @@ public class RPG {
      */
     public static void main(String[] args) {
         World world = World.getInstance();
-        
+
         System.out.println("Vous êtes perdus dans la campagne canadienne en plein hiver."
                 + " Tentez de survivre le plus longtemps possible!");
-        
+
         world.init();
-        
-        while (!world.getTracked().filterType(Player.class).isEmpty()) {            
+
+        while (!world.getTracked().filterType(Player.class).isEmpty()) {
             world.update();
         }
-        
-        System.out.println("Vous avez survécu " + world.getTicks() + " minutes.");
+
+        long ticks = world.getTicks();
+        long days = ticks / 60 / 24;
+        long hours = ticks / 60 % 24;
+        long minutes = ticks % 60;
+
+        System.out.println("Vous avez survécu " + days + " jour(s), " + hours + " heure(s) et " + minutes + " minute(s).");
     }
-    
+
 }

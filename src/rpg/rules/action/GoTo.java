@@ -8,6 +8,7 @@ package rpg.rules.action;
 import rpg.rules.Action;
 import rpg.utils.InsufficientHoldCapability;
 import rpg.utils.Named;
+import rpg.utils.Util;
 import rpg.world.entity.Actor;
 import rpg.world.Location;
 import rpg.world.entity.actor.Player;
@@ -26,10 +27,7 @@ public class GoTo extends Action {
     public void doEffect() {
         try {
             getActor().moveTo(location);
-            if (getActor() instanceof Player) {
-                Player player = (Player) getActor();
-                System.out.println("Vous allez vers " + location + ".");
-            }
+            Util.AlertPlayer(getActor(), "Vous allez vers " + location + ".");
         } catch (InsufficientHoldCapability ex) {
             // never reached
         }
